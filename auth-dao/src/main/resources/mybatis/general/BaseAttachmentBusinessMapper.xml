@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.general.AttachmentBusinessMapper">
+  <resultMap id="BaseResultMap" type="cn.vansky.auth.bo.general.AttachmentBusiness">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_type" property="businessType" jdbcType="INTEGER" />
+    <result column="business_id" property="businessId" jdbcType="BIGINT" />
+    <result column="attachment_id" property="attachmentId" jdbcType="BIGINT" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `id`, `business_type`, `business_id`, `attachment_id`, `add_time`, `flag`
+  </sql>
+  <insert id="insert" parameterType="cn.vansky.auth.bo.general.AttachmentBusiness" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+    insert into `tb_attachment_business` (`business_type`, `business_id`, `attachment_id`, 
+      `add_time`, `flag`)
+    values (#{businessType,jdbcType=INTEGER}, #{businessId,jdbcType=BIGINT}, #{attachmentId,jdbcType=BIGINT}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{flag,jdbcType=TINYINT})
+    ]]>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into `tb_attachment_business` (`business_type`, `business_id`, `attachment_id`, 
+      `add_time`, `flag`)
+     values 
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.businessType,jdbcType=INTEGER}, #{item.businessId,jdbcType=BIGINT}, #{item.attachmentId,jdbcType=BIGINT}, 
+        #{item.addTime,jdbcType=TIMESTAMP}, #{item.flag,jdbcType=TINYINT})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="cn.vansky.auth.bo.general.AttachmentBusiness" useGeneratedKeys="true" keyProperty="id">
+    insert into `tb_attachment_business`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="businessType != null">
+        `business_type`,
+      </if>
+      <if test="businessId != null">
+        `business_id`,
+      </if>
+      <if test="attachmentId != null">
+        `attachment_id`,
+      </if>
+      <if test="addTime != null">
+        `add_time`,
+      </if>
+      <if test="flag != null">
+        `flag`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="businessType != null">
+        #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=BIGINT},
+      </if>
+      <if test="attachmentId != null">
+        #{attachmentId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from `tb_attachment_business`
+    where `id` = #{id,jdbcType=BIGINT}
+  </delete>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_attachment_business`
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_attachment_business`
+    where `id` = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from `tb_attachment_business`
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.vansky.auth.bo.general.AttachmentBusiness">
+    update `tb_attachment_business`
+    <set>
+      <if test="businessType != null">
+        `business_type` = #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="businessId != null">
+        `business_id` = #{businessId,jdbcType=BIGINT},
+      </if>
+      <if test="attachmentId != null">
+        `attachment_id` = #{attachmentId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        `add_time` = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        `flag` = #{flag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where `id` = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.vansky.auth.bo.general.AttachmentBusiness">
+    update `tb_attachment_business`
+    set `business_type` = #{businessType,jdbcType=INTEGER},
+      `business_id` = #{businessId,jdbcType=BIGINT},
+      `attachment_id` = #{attachmentId,jdbcType=BIGINT},
+      `add_time` = #{addTime,jdbcType=TIMESTAMP},
+      `flag` = #{flag,jdbcType=TINYINT}
+    where `id` = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

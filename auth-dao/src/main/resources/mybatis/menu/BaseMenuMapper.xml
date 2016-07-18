@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.menu.MenuMapper">
+  <resultMap id="BaseResultMap" type="cn.vansky.auth.bo.menu.Menu">
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="system_id" property="systemId" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_id" property="createId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `Id`, `name`, `remark`, `parent_id`, `url`, `icon`, `system_id`, `level`, `status`, `create_id`, `create_time`
+  </sql>
+  <insert id="insert" parameterType="cn.vansky.auth.bo.menu.Menu" useGeneratedKeys="true" keyProperty="Id">
+    <![CDATA[
+    insert into `tb_menu` (`name`, `remark`, `parent_id`, 
+      `url`, `icon`, `system_id`, 
+      `level`, `status`, `create_id`, 
+      `create_time`)
+    values (#{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{systemId,jdbcType=INTEGER}, 
+      #{level,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+    ]]>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into `tb_menu` (`name`, `remark`, `parent_id`, 
+      `url`, `icon`, `system_id`, 
+      `level`, `status`, `create_id`, 
+      `create_time`)
+     values 
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.name,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, #{item.parentId,jdbcType=INTEGER}, 
+        #{item.url,jdbcType=VARCHAR}, #{item.icon,jdbcType=VARCHAR}, #{item.systemId,jdbcType=INTEGER}, 
+        #{item.level,jdbcType=TINYINT}, #{item.status,jdbcType=TINYINT}, #{item.createId,jdbcType=INTEGER}, 
+        #{item.createTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="cn.vansky.auth.bo.menu.Menu" useGeneratedKeys="true" keyProperty="Id">
+    insert into `tb_menu`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="remark != null">
+        `remark`,
+      </if>
+      <if test="parentId != null">
+        `parent_id`,
+      </if>
+      <if test="url != null">
+        `url`,
+      </if>
+      <if test="icon != null">
+        `icon`,
+      </if>
+      <if test="systemId != null">
+        `system_id`,
+      </if>
+      <if test="level != null">
+        `level`,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createId != null">
+        `create_id`,
+      </if>
+      <if test="createTime != null">
+        `create_time`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="systemId != null">
+        #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `tb_menu`
+    where `Id` = #{id,jdbcType=INTEGER}
+  </delete>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_menu`
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_menu`
+    where `Id` = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from `tb_menu`
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.vansky.auth.bo.menu.Menu">
+    update `tb_menu`
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        `remark` = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        `parent_id` = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        `url` = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        `icon` = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="systemId != null">
+        `system_id` = #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        `level` = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        `create_id` = #{createId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        `create_time` = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where `Id` = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.vansky.auth.bo.menu.Menu">
+    update `tb_menu`
+    set `name` = #{name,jdbcType=VARCHAR},
+      `remark` = #{remark,jdbcType=VARCHAR},
+      `parent_id` = #{parentId,jdbcType=INTEGER},
+      `url` = #{url,jdbcType=VARCHAR},
+      `icon` = #{icon,jdbcType=VARCHAR},
+      `system_id` = #{systemId,jdbcType=INTEGER},
+      `level` = #{level,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
+      `create_id` = #{createId,jdbcType=INTEGER},
+      `create_time` = #{createTime,jdbcType=TIMESTAMP}
+    where `Id` = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

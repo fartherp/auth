@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.general.AttachmentMapper">
+  <resultMap id="BaseResultMap" type="cn.vansky.auth.bo.general.Attachment">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_type" property="businessType" jdbcType="INTEGER" />
+    <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="add_user_id" property="addUserId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `id`, `business_type`, `file_type`, `name`, `path`, `file_name`, `add_time`, `add_user_id`
+  </sql>
+  <insert id="insert" parameterType="cn.vansky.auth.bo.general.Attachment" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+    insert into `tb_attachment` (`business_type`, `file_type`, `name`, 
+      `path`, `file_name`, `add_time`, 
+      `add_user_id`)
+    values (#{businessType,jdbcType=INTEGER}, #{fileType,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addUserId,jdbcType=BIGINT})
+    ]]>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into `tb_attachment` (`business_type`, `file_type`, `name`, 
+      `path`, `file_name`, `add_time`, 
+      `add_user_id`)
+     values 
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.businessType,jdbcType=INTEGER}, #{item.fileType,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+        #{item.path,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, #{item.addTime,jdbcType=TIMESTAMP}, 
+        #{item.addUserId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="cn.vansky.auth.bo.general.Attachment" useGeneratedKeys="true" keyProperty="id">
+    insert into `tb_attachment`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="businessType != null">
+        `business_type`,
+      </if>
+      <if test="fileType != null">
+        `file_type`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="path != null">
+        `path`,
+      </if>
+      <if test="fileName != null">
+        `file_name`,
+      </if>
+      <if test="addTime != null">
+        `add_time`,
+      </if>
+      <if test="addUserId != null">
+        `add_user_id`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="businessType != null">
+        #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUserId != null">
+        #{addUserId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from `tb_attachment`
+    where `id` = #{id,jdbcType=BIGINT}
+  </delete>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_attachment`
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_attachment`
+    where `id` = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from `tb_attachment`
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.vansky.auth.bo.general.Attachment">
+    update `tb_attachment`
+    <set>
+      <if test="businessType != null">
+        `business_type` = #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="fileType != null">
+        `file_type` = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        `path` = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        `file_name` = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        `add_time` = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUserId != null">
+        `add_user_id` = #{addUserId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where `id` = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.vansky.auth.bo.general.Attachment">
+    update `tb_attachment`
+    set `business_type` = #{businessType,jdbcType=INTEGER},
+      `file_type` = #{fileType,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      `path` = #{path,jdbcType=VARCHAR},
+      `file_name` = #{fileName,jdbcType=VARCHAR},
+      `add_time` = #{addTime,jdbcType=TIMESTAMP},
+      `add_user_id` = #{addUserId,jdbcType=BIGINT}
+    where `id` = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

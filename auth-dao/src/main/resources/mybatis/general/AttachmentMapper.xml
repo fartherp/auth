@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.general.AttachmentMapper">
+    <select id="readAttachs" resultType="cn.vansky.auth.dto.attachment.AttachmentDto">
+        SELECT
+        a.`id` as `id`,
+        a.`name` as `name`,
+        date_format(a.add_time, '%Y-%m-%d %H:%i:%s') as addTimeStr,
+        c.`real_name` as createUserName,
+        b.`flag` as flag
+        FROM
+        `tb_attachment` a,
+        `tb_attachment_business` b,
+        `tb_user` c
+        WHERE
+        a.`id` = b.`attachment_id`
+        and a.`add_user_id` = c.`user_id`
+        AND b.`business_type` = #{typeId}
+        AND b.`business_id` = #{busId}
+    </select>
+</mapper>

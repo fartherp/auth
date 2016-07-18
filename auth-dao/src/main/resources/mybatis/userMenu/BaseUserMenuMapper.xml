@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.userMenu.UserMenuMapper">
+  <resultMap id="BaseResultMap" type="cn.vansky.auth.bo.userMenu.UserMenu">
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="menu_id" property="menuId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `Id`, `user_id`, `menu_id`
+  </sql>
+  <insert id="insert" parameterType="cn.vansky.auth.bo.userMenu.UserMenu" useGeneratedKeys="true" keyProperty="Id">
+    <![CDATA[
+    insert into `tb_user_menu` (`user_id`, `menu_id`)
+    values (#{userId,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER})
+    ]]>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into `tb_user_menu` (`user_id`, `menu_id`)
+     values 
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.userId,jdbcType=INTEGER}, #{item.menuId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="cn.vansky.auth.bo.userMenu.UserMenu" useGeneratedKeys="true" keyProperty="Id">
+    insert into `tb_user_menu`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        `user_id`,
+      </if>
+      <if test="menuId != null">
+        `menu_id`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null">
+        #{menuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `tb_user_menu`
+    where `Id` = #{id,jdbcType=INTEGER}
+  </delete>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_user_menu`
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_user_menu`
+    where `Id` = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from `tb_user_menu`
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.vansky.auth.bo.userMenu.UserMenu">
+    update `tb_user_menu`
+    <set>
+      <if test="userId != null">
+        `user_id` = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null">
+        `menu_id` = #{menuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where `Id` = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.vansky.auth.bo.userMenu.UserMenu">
+    update `tb_user_menu`
+    set `user_id` = #{userId,jdbcType=INTEGER},
+      `menu_id` = #{menuId,jdbcType=INTEGER}
+    where `Id` = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

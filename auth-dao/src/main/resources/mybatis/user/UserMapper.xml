@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.user.UserMapper">
+    <resultMap id="ExtBaseResultMap" type="cn.vansky.auth.dto.user.UserDto">
+        <id column="Id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="TINYINT" />
+        <result column="role_id" property="roleId" jdbcType="INTEGER" />
+        <result column="system_id" property="systemId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_id" property="createId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_name" property="createName" jdbcType="VARCHAR" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <result column="system_name" property="systemName" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Ext_Base_Column_List">
+        t.`Id`, t.`name`, t.`password`, t.`email`, t.`phone`, t.`sex`, t.`role_id`, t.`system_id`, t.`status`,
+        t.`create_id`, t.`create_time`, j.name create_name, k.name role_name, b.dic_name system_name
+    </sql>
+    <select id="findPageList" resultMap="ExtBaseResultMap">
+        select
+        <include refid="Ext_Base_Column_List" />
+        from tb_user t left join tb_role k on t.role_id = k.id left join tb_user j on t.create_id = j.id
+        left join td_composite_dictionary b on t.system_id = b.dic_id and b.dic_type = #{dicType}
+        <where>
+            <if test="name != null and name != ''">
+                and t.name like CONCAT('%', #{name}, '%')
+            </if>
+            <if test="systemId != null and systemId != 0">
+                and t.system_id = #{systemId}
+            </if>
+        </where>
+        order by t.id desc
+    </select>
+    <select id="findUserByMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_user where name = #{name} and password = #{password}
+    </select>
+</mapper>

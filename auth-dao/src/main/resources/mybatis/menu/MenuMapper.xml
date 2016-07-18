@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.menu.MenuMapper">
+    <resultMap id="ExtBaseResultMap" type="cn.vansky.auth.dto.menu.MenuDto">
+        <id column="Id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="system_id" property="systemId" jdbcType="INTEGER" />
+        <result column="level" property="level" jdbcType="TINYINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_id" property="createId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="dic_name" property="systemName" jdbcType="VARCHAR" />
+        <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+        <result column="create_name" property="createName" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="findPageList" resultMap="ExtBaseResultMap">
+        select
+        a.`Id`, a.`name`, a.`remark`, a.`parent_id`, a.`url`, a.`icon`, a.`system_id`, a.`level`, a.`status`,
+        a.`create_id`, a.`create_time`, b.dic_name, c.name parent_name, d.name create_name
+        from tb_menu a left join td_composite_dictionary b on a.system_id = b.dic_id and b.dic_type = #{dicType}
+        left join tb_menu c on a.parent_id = c.id left join tb_user d on a.create_id = d.id
+        <where>
+            <if test="name != null and name != ''">
+                and a.name like CONCAT('%', #{name}, '%')
+            </if>
+            <if test="systemId != null and systemId != 0">
+                and a.system_id like CONCAT('%', #{systemId}, '%')
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="findPageRoleMenu" resultMap="BaseResultMap">
+        SELECT
+        a.`Id`, a.`name`, a.`remark`, a.`parent_id`, a.`url`, a.`icon`, a.`level`, a.`status`, a.`create_time`
+        FROM `tb_menu` a
+        <if test="roleId != null">
+            LEFT JOIN `tb_role_menu` b ON a.`Id` = b.`menu_id`
+            and b.`role_id` = #{roleId}
+            where b.`id` IS
+            <if test="no != null">
+                NOT
+            </if>
+            NULL
+        </if>
+        order by a.id
+    </select>
+    <select id="findByRoleId" resultMap="BaseResultMap">
+        select
+        a.`Id`, a.`name`, `remark`, a.`parent_id`, a.`url`, a.`icon`, a.`level`,
+        a.`status`, a.`create_id`, a.`create_time`
+        from `tb_menu` a
+        join `tb_role_menu` b
+        on a.`id` = b.`menu_id`
+        where b.`role_id` = #{roleId} and a.system_id = ${systemId}
+    </select>
+    <select id="findByUserId" resultMap="BaseResultMap">
+        select
+        a.`Id`, a.`name`, `remark`, a.`parent_id`, a.`url`, a.`icon`, a.`level`,
+        a.`status`, a.`create_id`, a.`create_time`
+        from `tb_menu` a
+        join `tb_user_menu` b
+        on a.`id` = b.`menu_id`
+        where b.`user_id` = #{userId} and a.system_id = ${systemId}
+    </select>
+</mapper>

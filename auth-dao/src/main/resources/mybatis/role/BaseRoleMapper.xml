@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.vansky.auth.dao.role.RoleMapper">
+  <resultMap id="BaseResultMap" type="cn.vansky.auth.bo.role.Role">
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="system_id" property="systemId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_id" property="createId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `Id`, `name`, `remark`, `system_id`, `status`, `create_id`, `create_time`
+  </sql>
+  <insert id="insert" parameterType="cn.vansky.auth.bo.role.Role" useGeneratedKeys="true" keyProperty="Id">
+    <![CDATA[
+    insert into `tb_role` (`name`, `remark`, `system_id`, 
+      `status`, `create_id`, `create_time`
+      )
+    values (#{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{systemId,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{createId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+    ]]>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into `tb_role` (`name`, `remark`, `system_id`, 
+      `status`, `create_id`, `create_time`
+      )
+     values 
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.name,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, #{item.systemId,jdbcType=INTEGER}, 
+        #{item.status,jdbcType=TINYINT}, #{item.createId,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="cn.vansky.auth.bo.role.Role" useGeneratedKeys="true" keyProperty="Id">
+    insert into `tb_role`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="remark != null">
+        `remark`,
+      </if>
+      <if test="systemId != null">
+        `system_id`,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createId != null">
+        `create_id`,
+      </if>
+      <if test="createTime != null">
+        `create_time`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="systemId != null">
+        #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `tb_role`
+    where `Id` = #{id,jdbcType=INTEGER}
+  </delete>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_role`
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `tb_role`
+    where `Id` = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from `tb_role`
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.vansky.auth.bo.role.Role">
+    update `tb_role`
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        `remark` = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="systemId != null">
+        `system_id` = #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        `create_id` = #{createId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        `create_time` = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where `Id` = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.vansky.auth.bo.role.Role">
+    update `tb_role`
+    set `name` = #{name,jdbcType=VARCHAR},
+      `remark` = #{remark,jdbcType=VARCHAR},
+      `system_id` = #{systemId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=TINYINT},
+      `create_id` = #{createId,jdbcType=INTEGER},
+      `create_time` = #{createTime,jdbcType=TIMESTAMP}
+    where `Id` = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
