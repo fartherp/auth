@@ -5,6 +5,7 @@
 package cn.vansky.auth.service.menu;
 
 import cn.vansky.auth.bo.menu.Menu;
+import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.framework.core.service.GenericService;
 import cn.vansky.framework.core.web.filter.auth.AuthWrapper;
@@ -22,7 +23,7 @@ public interface MenuService extends GenericService<Menu, Integer> {
 
     List<MenuDto> findPageList(Map<String, Object> params);
 
-    List<Menu> findPageRoleMenu(Map<String, Object> params);
+    List<MenuAuthDto> findRoleMenu(Map<String, Object> params);
 
     AuthWrapper findAuthWrapper(Integer userId, Integer systemId);
 }

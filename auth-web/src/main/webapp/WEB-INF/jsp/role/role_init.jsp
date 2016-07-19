@@ -45,17 +45,11 @@
                 </div>
             </div>
         </div>
-        <div id="ad" class="easyui-window" title="新增权限" data-options="closed:true" style="top:50px;width:800px;height:420px;padding:1px;">
-            <div class="easyui-layout" data-options="fit:true">
-                <div data-options="region:'center'">
-                    <div>
-                        <table id="ad_no_choice_list"></table>
-                    </div>
-                </div>
-                <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
-                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="aSubmitMenus();" style="width:80px">提交</a>
-                    <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeWindow($('#ad'));" style="width:80px">关闭</a>
-                </div>
+        <div id="ad" class="easyui-window" title="新增权限" data-options="closed:true" style="top:50px;width:300px;height:420px;padding:1px;">
+            <ul id="att" class="easyui-tree" data-options="animate:true,checkbox:true"></ul>
+            <div>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="aSubmitMenus();" style="width:80px">提交</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeWindow($('#ad'));" style="width:80px">关闭</a>
             </div>
         </div>
         <div id="e" class="easyui-window" title="编辑角色" data-options="closed:true," style="top:100px;width:500px;height:290px;padding:5px;">
@@ -93,21 +87,13 @@
                 </div>
             </div>
         </div>
-        <div id="ed" class="easyui-window" title="编辑权限" data-options="closed:true" style="top:50px;width:800px;height:420px;padding:1px;">
-            <div class="easyui-layout" data-options="fit:true">
-                <div data-options="region:'center'">
-                    <div style="padding:10px;">
-                        <table id="ed_choice_list"></table>
-                    </div>
-                    <div style="padding:10px;">
-                        <table id="ed_no_choice_list"></table>
-                    </div>
-                </div>
-                <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
-                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="eSubmitMenus();" style="width:80px">提交</a>
-                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="eRemoveMenus();" style="width:80px">移除</a>
-                    <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeWindow($('#ed'));" style="width:80px">关闭</a>
-                </div>
+        <div id="ed" class="easyui-window" title="编辑权限" data-options="closed:true" style="top:50px;width:300px;height:420px;padding:1px;">
+            <div>
+                <ul id="ett" class="easyui-tree" data-options="animate:true,checkbox:true"></ul>
+            </div>
+            <div align="center">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="eSubmitMenus();" style="width:80px">提交</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeWindow($('#ed'));" style="width:80px">关闭</a>
             </div>
         </div>
     </body>

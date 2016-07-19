@@ -5,6 +5,7 @@
 package cn.vansky.auth.dao.menu;
 
 import cn.vansky.auth.bo.menu.Menu;
+import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.framework.core.dao.SqlMapDao;
 
@@ -21,7 +22,7 @@ public interface MenuDao extends SqlMapDao<Menu, Integer> {
 
     List<MenuDto> findPageList(Map<String, Object> params);
 
-    List<Menu> findPageRoleMenu(Map<String, Object> params);
+    List<MenuAuthDto> findRoleMenu(Map<String, Object> params);
 
     List<Menu> findByRoleId(Integer roleId, Integer systemId);
 

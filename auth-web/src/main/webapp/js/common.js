@@ -88,3 +88,23 @@ function page_list(url, params, success, error) {
 function G(id) {
     return document.getElementById(id);
 }
+
+function doSearch() {
+    $('#list').datagrid('reload');
+}
+
+function submitForm(f, url, w) {
+    if (!f.form("validate")) {
+        return;
+    }
+    f.form('submit', {
+        url: url,
+        success: function(result) {
+            if (successJsonToObject(result)) {
+                f.form('clear');
+                closeWindow(w);
+                $('#list').datagrid('reload');
+            }
+        }
+    });
+}

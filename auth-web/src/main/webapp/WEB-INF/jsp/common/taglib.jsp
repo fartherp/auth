@@ -14,4 +14,5 @@
 <script type="text/javascript" src="<%=basePath%>js/easyui/easyuivalidation.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/common.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/kv.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/frame/cookie.js"></script>

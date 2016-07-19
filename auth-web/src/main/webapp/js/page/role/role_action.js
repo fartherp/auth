@@ -24,6 +24,36 @@ $(function () {
             panelHeight:'auto'
         });
     });
+
+    $('#aSystemId').combobox({
+        loader: aSystemIdListLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+
+    $('#eSystemId').combobox({
+        loader: eSystemIdListLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+
+    $('#eStatus').combobox({
+        data : [
+            {
+                "text":"可用",
+                "value":1
+            },
+            {
+                "text":"禁用",
+                "value":2
+            }
+        ],
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
 });
 
 function listLoader(param, success, error) {
@@ -36,130 +66,55 @@ function listLoader(param, success, error) {
     page_list('../role/page/list', params, success, error);
 }
 
-function doSearch() {
-    $('#list').datagrid('reload');
-}
-
-function submitForm(f, url, w) {
-    if (!f.form("validate")) {
-        return;
-    }
-    f.form('submit', {
-        url: url,
-        success: function(result) {
-            if (successJsonToObject(result)) {
-                f.form('clear');
-                closeWindow(w);
-                $('#list').datagrid('reload');
-            }
-        }
-    });
-}
-
 function doAdd() {
+    $('#aSystemId').combobox('reload');
     openWindow($('#a'));
-    $.getJSON('../kv/hint?module=5&defaultValue=1', function(json) {
-        $('#aSystemId').combobox({
-            data : json.dataList,
-            valueField: 'value',
-            textField: 'text',
-            panelHeight:'auto'
-        });
-    });
 }
 
 function doASearchMenu(value) {
-    openWindow($('#ad'));
-    $('#ad_no_choice_list').datagrid({
-        loader: noAChoiceListLoader,
-        title: '未选择权限列表',
-        loadMsg: '数据加载中...',
-        fitColumns: true,
-        pagination: true,
-        columns: colMenuModel
-    });
-}
-
-function noAChoiceListLoader(param, success, error) {
-    var params = {
-        systemId: $('#aSystemId').combobox('getValue'),
-        limit: param.rows,
-        currentPage: param.page
+    var data = {
+        systemId : $('#aSystemId').combobox('getValue'),
+        roleId : 0
     };
-    page_list('../menu/page/list_role_menu', params, success, error);
+    $.getJSON('../menu/list_role_menu', data, function(json) {
+        if (success(json)) {
+            $('#att').tree('loadData', json.dataList);
+        }
+    });
+    openWindow($('#ad'));
 }
 
 function doEdit() {
     var row = $('#list').datagrid('getSelected');
     if (row) {
-        openWindow($('#e'));
         $('#ef').form('load', {
             id: row.id,
             name: row.name
         });
-        $.getJSON('../kv/hint?module=5&defaultValue=' + row.systemId, function(json) {
-            $('#eSystemId').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
-        $.getJSON('../kv/hint?module=4&defaultValue=' + row.status, function(json) {
-            $('#eStatus').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
+        $('#eStatus').combobox('select', row.status);
+        $('#eSystemId').combobox('reload');
+        $('#eSystemId').combobox('select', row.systemId);
+        openWindow($('#e'));
     } else {
         $.messager.alert('温馨提示', '请选择角色信息!');
     }
 }
 
 function doESearchMenu(value) {
+    var data = {
+        systemId : $('#eSystemId').combobox('getValue'),
+        roleId : $('#eRoleId').val()
+    };
+    $.getJSON('../menu/list_role_menu', data, function(json) {
+        if (success(json)) {
+            $('#ett').tree('loadData', json.dataList);
+        }
+    });
     openWindow($('#ed'));
-    $('#ed_choice_list').datagrid({
-        loader: eChoiceListLoader,
-        title: '已选择权限列表',
-        loadMsg: '数据加载中...',
-        fitColumns: true,
-        pagination: true,
-        columns: colMenuModel
-    });
-    $('#ed_no_choice_list').datagrid({
-        loader: noEChoiceListLoader,
-        title: '未选择权限列表',
-        loadMsg: '数据加载中...',
-        fitColumns: true,
-        pagination: true,
-        columns: colMenuModel
-    });
-}
-
-function eChoiceListLoader(param, success, error) {
-    var params = {
-        roleId: $('#eRoleId').val(),
-        no: 1,
-        limit: param.rows,
-        currentPage: param.page
-    };
-    page_list('../menu/page/list_role_menu', params, success, error);
-}
-
-function noEChoiceListLoader(param, success, error) {
-    var params = {
-        roleId: $('#eRoleId').val(),
-        systemId: $('#eSystemId').combobox('getValue'),
-        limit: param.rows,
-        currentPage: param.page
-    };
-    page_list('../menu/page/list_role_menu', params, success, error);
 }
 
 function aSubmitMenus() {
-    var rows = $('#ad_no_choice_list').datagrid('getChecked');
+    var rows = $('#att').tree('getChecked', ['checked', 'indeterminate']);
     if (!rows || rows.length == 0) {
         $.messager.alert('温馨提示', '请选择需要添加权限!');
         return;
@@ -173,7 +128,7 @@ function aSubmitMenus() {
 }
 
 function eSubmitMenus() {
-    var rows = $('#ed_no_choice_list').datagrid('getChecked');
+    var rows = $('#ett').tree('getChecked', ['checked', 'indeterminate']);
     if (!rows || rows.length == 0) {
         $.messager.alert('温馨提示', '请选择需要添加权限!');
         return;
@@ -184,33 +139,4 @@ function eSubmitMenus() {
     }
     $('#eMenuIds').searchbox('setValue', menus);
     closeWindow($('#ed'));
-}
-
-function eRemoveMenus() {
-    var rows = $('#ed_choice_list').datagrid('getChecked');
-    if (!rows || rows.length == 0) {
-        $.messager.alert('温馨提示', '请选择需要移除权限!');
-        return;
-    }
-    var menus = [];
-    for (var i = 0; i < rows.length; i++) {
-        menus.push(rows[i].id);
-    }
-    var data = {
-        id: $('#eRoleId').val(),
-        menuIds: menus.toString()
-    };
-    $.ajax({
-        url: '../role/remove_menus',
-        dataType: 'json',
-        data: data,
-        success: function(json) {
-            $('#ed_choice_list').datagrid('reload');
-            $('#ed_no_choice_list').datagrid('reload');
-            $('#list').datagrid('reload');
-        },
-        error: function() {
-            error.apply(this, arguments);
-        }
-    });
 }

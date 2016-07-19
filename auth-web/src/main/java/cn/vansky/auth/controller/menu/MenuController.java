@@ -3,12 +3,16 @@ package cn.vansky.auth.controller.menu;
 import cn.vansky.auth.bo.menu.Menu;
 import cn.vansky.auth.controller.AbstractController;
 import cn.vansky.auth.controller.general.KvVoExt;
+import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.auth.service.menu.MenuService;
 import cn.vansky.auth.vo.menu.AuthWrapperVo;
 import cn.vansky.auth.vo.menu.MenuPageVo;
 import cn.vansky.framework.common.util.DateUtil;
 import cn.vansky.framework.core.util.JsonResp;
+import cn.vansky.framework.core.web.easyUI.model.EasyUITreeModel;
+import cn.vansky.framework.core.web.easyUI.service.EasyUITreeService;
+import cn.vansky.framework.core.web.easyUI.service.EasyUITreeServiceImpl;
 import cn.vansky.framework.core.web.filter.auth.AuthWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,18 +75,47 @@ public class MenuController extends AbstractController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/page/list_role_menu")
+    @RequestMapping(value = "/list_role_menu")
     public String listRoleMenu(MenuPageVo vo) {
-        List<Menu> ul = menuService.findPageRoleMenu(vo.convertPageMap());
-        vo.setRows(ul);
-        return JsonResp.asData(vo).setDatePattern(DateUtil.yyyy_MM_dd_HH_mm_ss).toJson();
+        List<MenuAuthDto> ul = menuService.findRoleMenu(vo.convertPageMap());
+        EasyUITreeService<MenuAuthDto> easyUITreeService = new EasyUITreeServiceImpl<MenuAuthDto>();
+        List<EasyUITreeModel> l = easyUITreeService.findChildren(ul, new EasyUITreeService.ModelCall<MenuAuthDto>() {
+            @Override
+            public EasyUITreeModel convert(MenuAuthDto o) {
+                EasyUITreeModel model = new EasyUITreeModel();
+                model.setId(o.getId());
+                model.setText(o.getName());
+                model.setPid(o.getParentId());
+                if (o.getChecked() != null) {
+                    model.setChecked(true);
+                }
+                return model;
+            }
+        });
+        if (vo.getRoleId() != 0) {
+            easyUITreeService.setCheck(l);
+        }
+        return JsonResp.asList().addAll(l).toJson();
     }
 
     @ResponseBody
     @RequestMapping(value = "/page/list_user_menu")
     public String listUserMenu(MenuPageVo vo) {
-        List<Menu> ul = menuService.findPageRoleMenu(vo.convertPageMap());
-        vo.setRows(ul);
+        List<MenuAuthDto> ul = menuService.findRoleMenu(vo.convertPageMap());
+        EasyUITreeService<MenuAuthDto> easyUITreeService = new EasyUITreeServiceImpl<MenuAuthDto>();
+        List<EasyUITreeModel> l = easyUITreeService.findChildren(ul, new EasyUITreeService.ModelCall<MenuAuthDto>() {
+            @Override
+            public EasyUITreeModel convert(MenuAuthDto o) {
+                EasyUITreeModel model = new EasyUITreeModel();
+                model.setId(o.getId());
+                model.setText(o.getName());
+                model.setPid(o.getParentId());
+                if (o.getChecked() != null) {
+                    model.setChecked(true);
+                }
+                return model;
+            }
+        });
         return JsonResp.asData(vo).setDatePattern(DateUtil.yyyy_MM_dd_HH_mm_ss).toJson();
     }
 

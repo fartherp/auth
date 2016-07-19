@@ -66,7 +66,7 @@
                 <div data-options="region:'center'" style="padding:10px;">
                     <form id="ef" class="easyui-form">
                         <table cellpadding="5">
-                            <input type="hidden" name="id"/>
+                            <input type="hidden" id="eUserId" name="id"/>
                             <tr>
                                 <td>用户名:</td>
                                 <td><input class="easyui-textbox" type="text" name="name" data-options="required:true"/></td>

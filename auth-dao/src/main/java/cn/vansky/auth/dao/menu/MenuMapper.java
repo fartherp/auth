@@ -5,6 +5,7 @@
 package cn.vansky.auth.dao.menu;
 
 import cn.vansky.auth.bo.menu.Menu;
+import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.framework.core.dao.DaoMapper;
 import cn.vansky.framework.core.orm.mybatis.annotation.SqlMapper;
@@ -24,7 +25,7 @@ public interface MenuMapper extends DaoMapper<Menu, Integer> {
 
     public List<MenuDto> findPageList(Map<String, Object> params);
 
-    List<Menu> findPageRoleMenu(Map<String, Object> params);
+    List<MenuAuthDto> findRoleMenu(Map<String, Object> params);
 
     List<Menu> findByRoleId(@Param("roleId")Integer roleId, @Param("systemId") Integer systemId);
 

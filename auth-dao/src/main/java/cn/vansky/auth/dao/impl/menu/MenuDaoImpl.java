@@ -7,6 +7,7 @@ package cn.vansky.auth.dao.impl.menu;
 import cn.vansky.auth.bo.menu.Menu;
 import cn.vansky.auth.dao.menu.MenuDao;
 import cn.vansky.auth.dao.menu.MenuMapper;
+import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.framework.core.dao.ConfigurableBaseSqlMapDao;
 import cn.vansky.framework.core.dao.DaoMapper;
@@ -46,8 +47,8 @@ public class MenuDaoImpl extends ConfigurableBaseSqlMapDao<Menu, Integer> implem
     }
 
     @Override
-    public List<Menu> findPageRoleMenu(Map<String, Object> params) {
-        return menuMapper.findPageRoleMenu(params);
+    public List<MenuAuthDto> findRoleMenu(Map<String, Object> params) {
+        return menuMapper.findRoleMenu(params);
     }
 
     @Override

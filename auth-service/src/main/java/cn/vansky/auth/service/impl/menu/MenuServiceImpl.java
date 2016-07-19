@@ -7,6 +7,7 @@ package cn.vansky.auth.service.impl.menu;
 import cn.vansky.auth.bo.menu.Menu;
 import cn.vansky.auth.bo.user.User;
 import cn.vansky.auth.dao.menu.MenuDao;
+import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.auth.service.menu.MenuService;
 import cn.vansky.auth.service.user.UserService;
@@ -49,8 +50,8 @@ public class MenuServiceImpl extends GenericSqlMapServiceImpl<Menu, Integer> imp
     }
 
     @Override
-    public List<Menu> findPageRoleMenu(Map<String, Object> params) {
-        return menuDao.findPageRoleMenu(params);
+    public List<MenuAuthDto> findRoleMenu(Map<String, Object> params) {
+        return menuDao.findRoleMenu(params);
     }
 
     @Override

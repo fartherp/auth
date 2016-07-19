@@ -42,6 +42,36 @@ $(function () {
             panelHeight:'auto'
         });
     });
+
+    $('#aSystemId').combobox({
+        loader: aSystemIdListLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+
+    $('#eSystemId').combobox({
+        loader: eSystemIdListLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+
+    $('#eStatus').combobox({
+        data : [
+            {
+                "text":"可用",
+                "value":1
+            },
+            {
+                "text":"禁用",
+                "value":2
+            }
+        ],
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
 });
 
 function listLoader(param, success, error) {
@@ -54,38 +84,11 @@ function listLoader(param, success, error) {
     page_list('../menu/page/list', params, success, error);
 }
 
-function doSearch() {
-    $('#list').datagrid('reload');
-}
-
-function submitForm(f, url, w) {
-    if (!f.form("validate")) {
-        return;
-    }
-    f.form('submit', {
-        url: url,
-        success: function(result) {
-            if (successJsonToObject(result)) {
-                f.form('clear');
-                closeWindow(w);
-                $('#list').datagrid('reload');
-            }
-        }
-    });
-}
-
 function doAdd() {
+    $('#aSystemId').combobox('reload');
     openWindow($('#a'));
     $.getJSON('../kv/hint?module=7&defaultValue=1', function(json) {
         $('#aLevel').combobox({
-            data : json.dataList,
-            valueField: 'value',
-            textField: 'text',
-            panelHeight:'auto'
-        });
-    });
-    $.getJSON('../kv/hint?module=5&defaultValue=1', function(json) {
-        $('#aSystemId').combobox({
             data : json.dataList,
             valueField: 'value',
             textField: 'text',
@@ -150,24 +153,11 @@ function doEdit() {
         });
         $('#ePId').combobox('setValue', row.parentId);
         $('#ePId').combobox('setText', row.parentName);
+        $('#eStatus').combobox('select', row.status);
+        $('#eSystemId').combobox('reload');
+        $('#eSystemId').combobox('select', row.systemId);
         $.getJSON('../kv/hint?module=7&defaultValue=' + row.level, function(json) {
             $('#eLevel').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
-        $.getJSON('../kv/hint?module=5&defaultValue=' + row.systemId, function(json) {
-            $('#eSystemId').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
-        $.getJSON('../kv/hint?module=4&defaultValue=' + row.status, function(json) {
-            $('#eStatus').combobox({
                 data : json.dataList,
                 valueField: 'value',
                 textField: 'text',

@@ -92,6 +92,8 @@ public class RoleController extends AbstractController {
             ts.add(roleMenu);
         }
         if (!ts.isEmpty()) {
+            params.put("roleId", role.getId());
+            roleMenuService.delMenu(params);
             roleMenuService.saveBatch(ts);
         }
         return JsonResp.asEmpty().toJson();
@@ -103,15 +105,5 @@ public class RoleController extends AbstractController {
         List<RoleDto> list = roleService.findPageList(vo.convertPageMap());
         vo.setRows(list);
         return JsonResp.asData(vo).setDatePattern(DateUtil.yyyy_MM_dd_HH_mm_ss).toJson();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/remove_menus")
-    public String removeMenu(Role role) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("roleId", role.getId());
-        params.put("menus", role.getMenuIds().split(","));
-        roleMenuService.delMenu(params);
-        return JsonResp.asEmpty().toJson();
     }
 }

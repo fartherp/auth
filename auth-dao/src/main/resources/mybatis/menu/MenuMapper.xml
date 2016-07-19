@@ -34,20 +34,26 @@
         order by a.id desc
     </select>
 
-    <select id="findPageRoleMenu" resultMap="BaseResultMap">
+    <resultMap id="MenuAuthMap" type="cn.vansky.auth.dto.menu.MenuAuthDto">
+        <id column="Id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="system_id" property="systemId" jdbcType="INTEGER" />
+        <result column="level" property="level" jdbcType="TINYINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_id" property="createId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="checked" property="checked" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="findRoleMenu" resultMap="MenuAuthMap">
         SELECT
-        a.`Id`, a.`name`, a.`remark`, a.`parent_id`, a.`url`, a.`icon`, a.`level`, a.`status`, a.`create_time`
+        a.`Id`, a.`name`, a.`remark`, a.`parent_id`, a.`url`, a.`icon`, a.`level`, a.`status`, a.`create_time`, b.`id` checked
         FROM `tb_menu` a
-        <if test="roleId != null">
-            LEFT JOIN `tb_role_menu` b ON a.`Id` = b.`menu_id`
-            and b.`role_id` = #{roleId}
-            where b.`id` IS
-            <if test="no != null">
-                NOT
-            </if>
-            NULL
-        </if>
-        order by a.id
+        LEFT JOIN `tb_role_menu` b ON a.`Id` = b.`menu_id` and b.`role_id` = #{roleId}
+        where a.`system_id` = #{systemId}
     </select>
     <select id="findByRoleId" resultMap="BaseResultMap">
         select

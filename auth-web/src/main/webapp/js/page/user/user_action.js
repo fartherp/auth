@@ -24,6 +24,84 @@ $(function () {
             panelHeight:'auto'
         });
     });
+    $('#aSex').combobox({
+        data : [
+            {
+                "text":"男",
+                "value":1,
+                "selected":true
+            },
+            {
+                "text":"女",
+                "value":2
+            }
+        ],
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+    $('#aSystemId').combobox({
+        loader: aSystemIdListLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto',
+        onChange: function (newValue) {
+            $('#aRoleId').combobox(['clear', 'reload']);
+        }
+    });
+    $('#aRoleId').combobox({
+        loader : aRoleIdLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+
+    $('#eSex').combobox({
+        data : [
+            {
+                "text":"男",
+                "value":1
+            },
+            {
+                "text":"女",
+                "value":2
+            }
+        ],
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+    $('#eSystemId').combobox({
+        loader: eSystemIdListLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto',
+        onChange: function (newValue) {
+            $('#eRoleId').combobox(['clear', 'reload']);
+        }
+    });
+    $('#eRoleId').combobox({
+        loader : eRoleIdLoader,
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
+
+    $('#eStatus').combobox({
+        data : [
+            {
+                "text":"可用",
+                "value":1
+            },
+            {
+                "text":"禁用",
+                "value":2
+            }
+        ],
+        valueField: 'value',
+        textField: 'text',
+        panelHeight:'auto'
+    });
 });
 
 function listLoader(param, success, error) {
@@ -36,96 +114,42 @@ function listLoader(param, success, error) {
     page_list('../user/page/list', params, success, error);
 }
 
-function doSearch() {
-    $('#list').datagrid('reload');
+function aRoleIdLoader(param, success, error) {
+    var aSystemId = $('#aSystemId').combobox('getValue');
+    $.getJSON('../kv/hint?module=2&system_id=' + aSystemId, function(json) {
+        success(json.dataList);
+    });
 }
 
-function submitForm(f, url, w) {
-    if (!f.form("validate")) {
-        return;
-    }
-    f.form('submit', {
-        url: url,
-        success: function(result) {
-            if (successJsonToObject(result)) {
-                f.form('clear');
-                closeWindow(w);
-                $('#list').datagrid('reload');
-            }
-        }
+function eRoleIdLoader(param, success, error) {
+    var aSystemId = $('#eSystemId').combobox('getValue');
+    $.getJSON('../kv/hint?module=2&system_id=' + aSystemId, function(json) {
+        success(json.dataList);
     });
 }
 
 function doAdd() {
+    $('#aSystemId').combobox('reload');
+    $('#aRoleId').combobox('reload');
     openWindow($('#a'));
-    $.getJSON('../kv/hint?module=1&defaultValue=1', function(json) {
-        $('#aSex').combobox({
-            data : json.dataList,
-            valueField: 'value',
-            textField: 'text',
-            panelHeight:'auto'
-        });
-    });
-    $.getJSON('../kv/hint?module=5&defaultValue=1', function(json) {
-        $('#aSystemId').combobox({
-            data : json.dataList,
-            valueField: 'value',
-            textField: 'text',
-            panelHeight:'auto'
-        });
-    });
-    $.getJSON('../kv/hint?module=2&defaultValue=1', function(json) {
-        $('#aRoleId').combobox({
-            data : json.dataList,
-            valueField: 'value',
-            textField: 'text',
-            panelHeight:'auto'
-        });
-    });
 }
 
 function doEdit() {
     var row = $('#list').datagrid('getSelected');
     if (row) {
-        openWindow($('#e'));
         $('#ef').form('load', {
             id: row.id,
             name: row.name,
             email: row.email,
             phone: row.phone
         });
-        $.getJSON('../kv/hint?module=1&defaultValue=' + row.sex, function(json) {
-            $('#eSex').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
-        $.getJSON('../kv/hint?module=5&defaultValue=' + row.systemId, function(json) {
-            $('#eSystemId').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
-        $.getJSON('../kv/hint?module=2&defaultValue=' + row.roleId, function(json) {
-            $('#eRoleId').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
-        $.getJSON('../kv/hint?module=4&defaultValue=' + row.status, function(json) {
-            $('#eStatus').combobox({
-                data : json.dataList,
-                valueField: 'value',
-                textField: 'text',
-                panelHeight:'auto'
-            });
-        });
+        $('#eSex').combobox('select', row.sex);
+        $('#eStatus').combobox('select', row.status);
+        $('#eSystemId').combobox('reload');
+        $('#eSystemId').combobox('select', row.systemId);
+        $('#eRoleId').combobox('reload');
+        $('#eRoleId').combobox('select', row.roleId);
+        openWindow($('#e'));
     } else {
         $.messager.alert('温馨提示', '请选择用户信息!');
     }
