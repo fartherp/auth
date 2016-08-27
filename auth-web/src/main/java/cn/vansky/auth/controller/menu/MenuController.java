@@ -10,10 +10,10 @@ import cn.vansky.auth.vo.menu.AuthWrapperVo;
 import cn.vansky.auth.vo.menu.MenuPageVo;
 import cn.vansky.framework.common.util.DateUtil;
 import cn.vansky.framework.core.util.JsonResp;
-import cn.vansky.framework.core.web.easyUI.model.EasyUITreeModel;
-import cn.vansky.framework.core.web.easyUI.service.EasyUITreeService;
-import cn.vansky.framework.core.web.easyUI.service.EasyUITreeServiceImpl;
+import cn.vansky.framework.core.web.easyUI.model.SimpleTreeModel;
 import cn.vansky.framework.core.web.filter.auth.AuthWrapper;
+import cn.vansky.framework.core.web.tree.SimpleTreeService;
+import cn.vansky.framework.core.web.tree.simple.SimpleTreeServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -78,23 +78,21 @@ public class MenuController extends AbstractController {
     @RequestMapping(value = "/list_role_menu")
     public String listRoleMenu(MenuPageVo vo) {
         List<MenuAuthDto> ul = menuService.findRoleMenu(vo.convertPageMap());
-        EasyUITreeService<MenuAuthDto> easyUITreeService = new EasyUITreeServiceImpl<MenuAuthDto>();
-        List<EasyUITreeModel> l = easyUITreeService.findChildren(ul, new EasyUITreeService.ModelCall<MenuAuthDto>() {
+        SimpleTreeService<MenuAuthDto> easyUITreeService = new SimpleTreeServiceImpl<MenuAuthDto>();
+        List<SimpleTreeModel> l = easyUITreeService.findTree(ul, new SimpleTreeService.ModelCall<MenuAuthDto>() {
             @Override
-            public EasyUITreeModel convert(MenuAuthDto o) {
-                EasyUITreeModel model = new EasyUITreeModel();
+            public SimpleTreeModel convert(MenuAuthDto o) {
+                SimpleTreeModel model = new SimpleTreeModel();
                 model.setId(o.getId());
                 model.setText(o.getName());
                 model.setPid(o.getParentId());
                 if (o.getChecked() != null) {
                     model.setChecked(true);
                 }
+                model.setOpen(true);
                 return model;
             }
         });
-        if (vo.getRoleId() != 0) {
-            easyUITreeService.setCheck(l);
-        }
         return JsonResp.asList().addAll(l).toJson();
     }
 
@@ -102,17 +100,18 @@ public class MenuController extends AbstractController {
     @RequestMapping(value = "/page/list_user_menu")
     public String listUserMenu(MenuPageVo vo) {
         List<MenuAuthDto> ul = menuService.findRoleMenu(vo.convertPageMap());
-        EasyUITreeService<MenuAuthDto> easyUITreeService = new EasyUITreeServiceImpl<MenuAuthDto>();
-        List<EasyUITreeModel> l = easyUITreeService.findChildren(ul, new EasyUITreeService.ModelCall<MenuAuthDto>() {
+        SimpleTreeService<MenuAuthDto> easyUITreeService = new SimpleTreeServiceImpl<MenuAuthDto>();
+        List<SimpleTreeModel> l = easyUITreeService.findTree(ul, new SimpleTreeService.ModelCall<MenuAuthDto>() {
             @Override
-            public EasyUITreeModel convert(MenuAuthDto o) {
-                EasyUITreeModel model = new EasyUITreeModel();
+            public SimpleTreeModel convert(MenuAuthDto o) {
+                SimpleTreeModel model = new SimpleTreeModel();
                 model.setId(o.getId());
                 model.setText(o.getName());
                 model.setPid(o.getParentId());
                 if (o.getChecked() != null) {
                     model.setChecked(true);
                 }
+                model.setOpen(true);
                 return model;
             }
         });

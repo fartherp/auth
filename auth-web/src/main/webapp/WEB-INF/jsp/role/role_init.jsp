@@ -46,7 +46,9 @@
             </div>
         </div>
         <div id="ad" class="easyui-window" title="新增权限" data-options="closed:true" style="top:50px;width:300px;height:420px;padding:1px;">
-            <ul id="att" class="easyui-tree" data-options="animate:true,checkbox:true"></ul>
+            <div>
+                <ul id="att" class="ztree"></ul>
+            </div>
             <div>
                 <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="aSubmitMenus();" style="width:80px">提交</a>
                 <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeWindow($('#ad'));" style="width:80px">关闭</a>
@@ -89,7 +91,7 @@
         </div>
         <div id="ed" class="easyui-window" title="编辑权限" data-options="closed:true" style="top:50px;width:300px;height:420px;padding:1px;">
             <div>
-                <ul id="ett" class="easyui-tree" data-options="animate:true,checkbox:true"></ul>
+                <ul id="ett" class="ztree"></ul>
             </div>
             <div align="center">
                 <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="eSubmitMenus();" style="width:80px">提交</a>

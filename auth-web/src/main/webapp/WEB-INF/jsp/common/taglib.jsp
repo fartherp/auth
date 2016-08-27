@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/easyui/my97.css">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>css/frame/common.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>css/zTreeStyle/zTreeStyle.css">
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/easyui/jquery.easyui.min.js"></script>
@@ -16,3 +17,4 @@
 <script type="text/javascript" src="<%=basePath%>js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/kv.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/frame/cookie.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery.ztree.all.min.js"></script>

@@ -56,6 +56,24 @@ $(function () {
     });
 });
 
+var setting = {
+    check: {
+        enable: true,
+        chkboxType:  { "Y": "p", "N": "s" }
+    },
+    data: {
+        key: {
+            name: "text"
+        },
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "pid",
+            rootPId: 0
+        }
+    }
+};
+
 function listLoader(param, success, error) {
     var params = {
         name: $("#name").val(),
@@ -78,7 +96,7 @@ function doASearchMenu(value) {
     };
     $.getJSON('../menu/list_role_menu', data, function(json) {
         if (success(json)) {
-            $('#att').tree('loadData', json.dataList);
+            $.fn.zTree.init($("#att"), setting, json.dataList);
         }
     });
     openWindow($('#ad'));
@@ -107,14 +125,14 @@ function doESearchMenu(value) {
     };
     $.getJSON('../menu/list_role_menu', data, function(json) {
         if (success(json)) {
-            $('#ett').tree('loadData', json.dataList);
+            $.fn.zTree.init($("#ett"), setting, json.dataList);
         }
     });
     openWindow($('#ed'));
 }
 
 function aSubmitMenus() {
-    var rows = $('#att').tree('getChecked', ['checked', 'indeterminate']);
+    var rows = $.fn.zTree.getZTreeObj('att').getCheckedNodes(true);
     if (!rows || rows.length == 0) {
         $.messager.alert('温馨提示', '请选择需要添加权限!');
         return;
@@ -128,7 +146,7 @@ function aSubmitMenus() {
 }
 
 function eSubmitMenus() {
-    var rows = $('#ett').tree('getChecked', ['checked', 'indeterminate']);
+    var rows = $.fn.zTree.getZTreeObj('ett').getCheckedNodes(true);
     if (!rows || rows.length == 0) {
         $.messager.alert('温馨提示', '请选择需要添加权限!');
         return;
