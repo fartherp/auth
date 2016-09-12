@@ -1,5 +1,6 @@
 package cn.vansky.auth.dto.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * Auth: CK
  * Date: 2016/5/20
  */
-public class UserDto {
+public class UserDto implements Serializable {
     private Integer id;
     private String name;
     private String password;

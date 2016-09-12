@@ -1,6 +1,7 @@
 package cn.vansky.auth.vo.menu;
 
 import cn.vansky.auth.bo.menu.Menu;
+import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.framework.core.vo.BaseVo;
 
 /**
@@ -8,7 +9,7 @@ import cn.vansky.framework.core.vo.BaseVo;
  * Auth: CK
  * Date: 2016/5/20
  */
-public class MenuPageVo extends BaseVo<Menu> {
+public class MenuPageVo extends BaseVo<MenuDto> {
     private String name;
     private Integer dicType = 3;
     private Integer systemId;

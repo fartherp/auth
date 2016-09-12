@@ -1,6 +1,7 @@
 package cn.vansky.auth.vo.user;
 
 import cn.vansky.auth.bo.user.User;
+import cn.vansky.auth.dto.user.UserDto;
 import cn.vansky.framework.core.vo.BaseVo;
 
 /**
@@ -8,7 +9,7 @@ import cn.vansky.framework.core.vo.BaseVo;
  * Auth: CK
  * Date: 2016/5/20
  */
-public class UserPageVo extends BaseVo<User> {
+public class UserPageVo extends BaseVo<UserDto> {
     private String name;
     private Integer dicType = 3;
     private Integer systemId;

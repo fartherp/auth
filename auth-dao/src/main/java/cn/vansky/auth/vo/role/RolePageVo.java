@@ -1,6 +1,7 @@
 package cn.vansky.auth.vo.role;
 
 import cn.vansky.auth.bo.role.Role;
+import cn.vansky.auth.dto.role.RoleDto;
 import cn.vansky.framework.core.vo.BaseVo;
 
 /**
@@ -8,7 +9,7 @@ import cn.vansky.framework.core.vo.BaseVo;
  * Auth: CK
  * Date: 2016/5/20
  */
-public class RolePageVo extends BaseVo<Role> {
+public class RolePageVo extends BaseVo<RoleDto> {
     private String name;
     private Integer dicType = 3;
     private Integer systemId;
