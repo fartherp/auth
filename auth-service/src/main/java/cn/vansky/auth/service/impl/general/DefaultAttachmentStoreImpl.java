@@ -36,7 +36,7 @@ public class DefaultAttachmentStoreImpl implements AttachmentStore {
     }
 
     public Attachment saveStore(MultipartFile file, AttachType type, Long ucid) {
-        FileStore store = (FileStore) ServiceLocator.getInstance().getBean(type.getBeanName());
+        FileStore store = ServiceLocator.getInstance().getBean(type.getBeanName());
         String dir = store.partitionDir(type.getTypeId());
         String name = generateFilename(store, file.getOriginalFilename());
         try {
@@ -59,7 +59,7 @@ public class DefaultAttachmentStoreImpl implements AttachmentStore {
     }
 
     public Attachment saveStore(InputStream in, String fileName, AttachType type, Long ucid) {
-        FileStore store = (FileStore) ServiceLocator.getInstance().getBean(type.getBeanName());
+        FileStore store = ServiceLocator.getInstance().getBean(type.getBeanName());
         String dir = store.partitionDir(type.getTypeId());
         String name = generateFilename(store, fileName);
         store.store(dir, in, name);
@@ -79,13 +79,13 @@ public class DefaultAttachmentStoreImpl implements AttachmentStore {
     public void fetch(Attachment attach, Long ucid, OutputStream output) {
         Preconditions.checkNotNull(attach, "attachment file not found");
         AttachType type = AttachType.fromTypeId(attach.getBusinessType());
-        FileStore store = (FileStore) ServiceLocator.getInstance().getBean(type.getBeanName());
+        FileStore store = ServiceLocator.getInstance().getBean(type.getBeanName());
         String dir = store.partitionDir(type.getTypeId());
         store.fetch(dir, attach.getFileName(), output);
     }
 
     public Collection<AttachmentDto> readAttachments(AttachType type, Long busId) {
-        FileStore store = (FileStore) ServiceLocator.getInstance().getBean(type.getBeanName());
+        FileStore store = ServiceLocator.getInstance().getBean(type.getBeanName());
         Collection<AttachmentDto> attachments = attachmentService.readAttachments(type, busId);
         if (null == attachments || attachments.isEmpty()) {
             return new ArrayList<AttachmentDto>();
@@ -105,7 +105,7 @@ public class DefaultAttachmentStoreImpl implements AttachmentStore {
 
     @Override
     public FileStoreConfig getFileStoreConfig(AttachType type) {
-        FileStore store = (FileStore) ServiceLocator.getInstance().getBean(type.getBeanName());
+        FileStore store = ServiceLocator.getInstance().getBean(type.getBeanName());
         return store.getFileStoreConfig();
     }
 
