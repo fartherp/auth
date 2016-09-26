@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import cn.vansky.framework.core.web.easyUI.model.EasyUITreeModel;
 import cn.vansky.framework.core.web.easyUI.service.EasyUITreeService;
 import cn.vansky.framework.core.web.filter.auth.AuthWrapper;
+import cn.vansky.framework.core.web.filter.auth.GeneralAuthWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -55,33 +56,43 @@ public class MenuServiceImpl extends GenericSqlMapServiceImpl<Menu, Integer> imp
     }
 
     @Override
-    public AuthWrapper findAuthWrapper(Integer userId, Integer systemId) {
+    public GeneralAuthWrapper findAuthWrapper(Integer userId, Integer systemId) {
+        GeneralAuthWrapper generalAuthWrapper = new GeneralAuthWrapper();
         User user = userService.findById(userId);
-        if (!user.getSystemId().equals(systemId)) {
-            return null;
-        }
-        List<Menu> allList = menuDao.findByRoleId(user.getRoleId(), systemId);
-        allList.addAll(menuDao.findByUserId(userId, systemId));
-        AuthWrapper authWrapper = new AuthWrapper();
-        List<Menu> menuList = new ArrayList<Menu>();
-        for (Menu menu : allList) {
-            authWrapper.addUrl(menu.getUrl());
-            if (menu.getLevel() == 1) {
-                menuList.add(menu);
+        if (user == null) {
+            generalAuthWrapper.setStatus(1);
+            generalAuthWrapper.setStatusInfo("权限系统没有此用户信息!");
+        } else if (!user.getSystemId().equals(systemId)) {
+            generalAuthWrapper.setStatus(1);
+            generalAuthWrapper.setStatusInfo("登录系统标识设置错误!");
+        } else if (User.NO_USE_ABLE.equals(user.getStatus())) {
+            generalAuthWrapper.setStatus(1);
+            generalAuthWrapper.setStatusInfo("权限账户被锁定,请联系管理员!");
+        } else {
+            List<Menu> allList = menuDao.findByRoleId(user.getRoleId(), systemId);
+            allList.addAll(menuDao.findByUserId(userId, systemId));
+            AuthWrapper authWrapper = new AuthWrapper();
+            List<Menu> menuList = new ArrayList<Menu>();
+            for (Menu menu : allList) {
+                authWrapper.addUrl(menu.getUrl());
+                if (menu.getLevel() == 1) {
+                    menuList.add(menu);
+                }
             }
+            List<EasyUITreeModel> l = easyUITreeService.findChildren(menuList, new EasyUITreeService.ModelCall<Menu>() {
+                @Override
+                public EasyUITreeModel convert(Menu o) {
+                    EasyUITreeModel model = new EasyUITreeModel();
+                    model.setId(o.getId());
+                    model.setText(o.getName());
+                    model.setUrl(o.getUrl());
+                    model.setPid(o.getParentId());
+                    return model;
+                }
+            });
+            authWrapper.setMenuList(l);
+            generalAuthWrapper.setData(authWrapper);
         }
-        List<EasyUITreeModel> l = easyUITreeService.findChildren(menuList, new EasyUITreeService.ModelCall<Menu>() {
-            @Override
-            public EasyUITreeModel convert(Menu o) {
-                EasyUITreeModel model = new EasyUITreeModel();
-                model.setId(o.getId());
-                model.setText(o.getName());
-                model.setUrl(o.getUrl());
-                model.setPid(o.getParentId());
-                return model;
-            }
-        });
-        authWrapper.setMenuList(l);
-        return authWrapper;
+        return generalAuthWrapper;
     }
 }

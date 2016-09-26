@@ -11,7 +11,7 @@ import cn.vansky.auth.vo.menu.MenuPageVo;
 import cn.vansky.framework.common.util.DateUtil;
 import cn.vansky.framework.core.util.JsonResp;
 import cn.vansky.framework.core.web.easyUI.model.SimpleTreeModel;
-import cn.vansky.framework.core.web.filter.auth.AuthWrapper;
+import cn.vansky.framework.core.web.filter.auth.GeneralAuthWrapper;
 import cn.vansky.framework.core.web.tree.SimpleTreeService;
 import cn.vansky.framework.core.web.tree.simple.SimpleTreeServiceImpl;
 import org.springframework.stereotype.Controller;
@@ -121,7 +121,10 @@ public class MenuController extends AbstractController {
     @ResponseBody
     @RequestMapping(value = "/get_auth")
     public String findAuthWrapper(AuthWrapperVo vo) {
-        AuthWrapper authWrapper = menuService.findAuthWrapper(vo.getUserId(), vo.getSystemId());
-        return JsonResp.asData(authWrapper).toJson();
+        GeneralAuthWrapper authWrapper = menuService.findAuthWrapper(vo.getUserId(), vo.getSystemId());
+        if (authWrapper.getStatus() != 0) {
+            return JsonResp.asEmpty().error(authWrapper.getStatusInfo()).toJson();
+        }
+        return JsonResp.asData(authWrapper.getData()).toJson();
     }
 }

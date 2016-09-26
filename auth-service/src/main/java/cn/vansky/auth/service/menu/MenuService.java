@@ -9,6 +9,7 @@ import cn.vansky.auth.dto.menu.MenuAuthDto;
 import cn.vansky.auth.dto.menu.MenuDto;
 import cn.vansky.framework.core.service.GenericService;
 import cn.vansky.framework.core.web.filter.auth.AuthWrapper;
+import cn.vansky.framework.core.web.filter.auth.GeneralAuthWrapper;
 
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,5 @@ public interface MenuService extends GenericService<Menu, Integer> {
 
     List<MenuAuthDto> findRoleMenu(Map<String, Object> params);
 
-    AuthWrapper findAuthWrapper(Integer userId, Integer systemId);
+    GeneralAuthWrapper findAuthWrapper(Integer userId, Integer systemId);
 }

@@ -128,7 +128,6 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.6</version>
                 <configuration>
-                    <targetJdk>1.6</targetJdk>
                     <linkXRef>true</linkXRef>
                     <format>xml</format>
                     <sourceEncoding>utf-8</sourceEncoding>
